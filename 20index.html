@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevToolkit Pro - All-in-One Developer Tools</title>
+    
+    <!-- CSS STYLES -->
+    <style>
+        :root {
+            --bg: #090d16;
+            --panel: #131b2e;
+            --border: #1e293b;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 30px 15px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Common Form Elements */
+        label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #0b1120;
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        button {
+            background: var(--accent);
+            color: #000;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+            color: #fff;
+        }
+
+        /* 1. Gradient Generator Styles */
+        .preview-box {
+            height: 120px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: background 0.3s;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .color-picker {
+            padding: 2px;
+            height: 45px;
+            cursor: pointer;
+        }
+
+        /* 2. Text to Speech Styles */
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* 3. JSON Formatter Styles */
+        .json-area {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            min-height: 120px;
+        }
+
+        .status-msg {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: -10px;
+        }
+
+        .status-msg.success { color: var(--success); }
+        .status-msg.error { color: var(--danger); }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🛠️ DevToolkit Pro</h1>
+        <p>Dasturchi va dizaynerlar uchun eng kerakli kundalik asboblar</p>
+    </header>
+
+    <div class="grid-container">
+
+        <!-- 1. CSS GRADIENT GENERATOR -->
+        <div class="card">
+            <div class="card-header">
+                <span>🎨</span>
+                <h2>CSS Gradient Generator</h2>
+            </div>
+            
+            <div class="preview-box" id="gradientPreview"></div>
+
+            <div class="controls-row">
+                <div style="flex: 1;">
+                    <label>Rang 1</label>
+                    <input type="color" id="color1" class="color-picker" value="#38bdf8">
+                </div>
+                <div style="flex: 1;">
+                    <label>Rang 2</label>
+                    <input type="color" id="color2" class="color-picker" value="#9333ea">
+                </div>
+            </div>
+
+            <div>
+                <label>Burchak (gradus): <span id="angleVal">90°</span></label>
+                <input type="range" id="angle" min="0" max="360" value="90">
+            </div>
+
+            <div>
+                <label>CSS Kod:</label>
+                <input type="text" id="gradientCss" readonly>
+            </div>
+
+            <button onclick="copyGradient()">Nusxa olish (Copy CSS)</button>
+        </div>
+
+        <!-- 2. TEXT TO SPEECH SYNTH -->
+        <div class="card">
+            <div class="card-header">
+                <span>🗣️</span>
+                <h2>Text-to-Speech (Ovozli O'quvchi)</h2>
+            </div>
+
+            <div>
+                <label>Matnni kiriting:</label>
+                <textarea id="speechText" placeholder="Bu yerga istalgan matnni yozing..."></textarea>
+            </div>
+
+            <div class="controls-row">
+                <div style="flex: 1;">
+                    <label>Tezlik:</label>
+                    <input type="range" id="speechRate" min="0.5" max="2" step="0.1" value="1">
+                </div>
+                <div style="flex: 1;">
+                    <label>Ovoz balandligi:</label>
+                    <input type="range" id="speechPitch" min="0" max="2" step="0.1" value="1">
+                </div>
+            </div>
+
+            <div class="controls-row">
+                <button onclick="speakText()">O'qish ▶</button>
+                <button onclick="stopSpeech()" style="background: var(--danger); color: #fff;">To'xtatish ⏹</button>
+            </div>
+        </div>
+
+        <!-- 3. JSON FORMATTER & VALIDATOR -->
+        <div class="card">
+            <div class="card-header">
+                <span>⚡</span>
+                <h2>JSON Formatter & Validator</h2>
+            </div>
+
+            <div>
+                <label>Xom (Raw) JSON kodi:</label>
+                <textarea id="jsonInput" class="json-area" placeholder='{"name":"Ali", "age":22}'></textarea>
+            </div>
+
+            <div class="status-msg" id="jsonStatus"></div>
+
+            <div class="controls-row">
+                <button onclick="formatJSON()">Chiroyli qilish (Format)</button>
+                <button onclick="minifyJSON()" style="background: var(--border); color: #fff;">Siqish (Minify)</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ==========================================
+        // 1. GRADIENT GENERATOR LOGIC
+        // ==========================================
+        const color1 = document.getElementById('color1');
+        const color2 = document.getElementById('color2');
+        const angle = document.getElementById('angle');
+        const angleVal = document.getElementById('angleVal');
+        const preview = document.getElementById('gradientPreview');
+        const cssOutput = document.getElementById('gradientCss');
+
+        function updateGradient() {
+            const deg = angle.value;
+            angleVal.innerText = deg + '°';
+            const cssString = `linear-gradient(${deg}deg, ${color1.value}, ${color2.value})`;
+            preview.style.background = cssString;
+            cssOutput.value = `background: ${cssString};`;
+        }
+
+        function copyGradient() {
+            cssOutput.select();
+            navigator.clipboard.writeText(cssOutput.value);
+            alert('CSS kodi nusxalandi! ✅');
+        }
+
+        color1.addEventListener('input', updateGradient);
+        color2.addEventListener('input', updateGradient);
+        angle.addEventListener('input', updateGradient);
+        updateGradient();
+
+        // ==========================================
+        // 2. TEXT TO SPEECH LOGIC
+        // ==========================================
+        const synth = window.speechSynthesis;
+
+        function speakText() {
+            if (synth.speaking) synth.cancel();
+
+            const text = document.getElementById('speechText').value;
+            if (!text.trim()) return alert("Iltimos, matn kiriting!");
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = document.getElementById('speechRate').value;
+            utterance.pitch = document.getElementById('speechPitch').value;
+
+            synth.speak(utterance);
+        }
+
+        function stopSpeech() {
+            if (synth.speaking) synth.cancel();
+        }
+
+        // ==========================================
+        // 3. JSON FORMATTER LOGIC
+        // ==========================================
+        const jsonInput = document.getElementById('jsonInput');
+        const jsonStatus = document.getElementById('jsonStatus');
+
+        function formatJSON() {
+            try {
+                const rawVal = jsonInput.value;
+                if (!rawVal.trim()) return;
+                const parsed = JSON.parse(rawVal);
+                jsonInput.value = JSON.stringify(parsed, null, 4);
+                jsonStatus.innerText = "Tog'ri JSON format! ✅";
+                jsonStatus.className = "status-msg success";
+            } catch (err) {
+                jsonStatus.innerText = "Xato JSON sintaksisi! ❌";
+                jsonStatus.className = "status-msg error";
+            }
+        }
+
+        function minifyJSON() {
+            try {
+                const rawVal = jsonInput.value;
+                if (!rawVal.trim()) return;
+                const parsed = JSON.parse(rawVal);
+                jsonInput.value = JSON.stringify(parsed);
+                jsonStatus.innerText = "JSON siqildi! ✅";
+                jsonStatus.className = "status-msg success";
+            } catch (err) {
+                jsonStatus.innerText = "Xato JSON sintaksisi! ❌";
+                jsonStatus.className = "status-msg error";
+            }
+        }
+    </script>
+</body>
+</html>
